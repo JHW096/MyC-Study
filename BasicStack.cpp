@@ -1,70 +1,100 @@
 #include<iostream>
 #include<string>
+#define max 101
 using namespace std;
-
 
 template<class T>
 class stack {
-	T data[100];
+	T* data;
 	int tos;
+
 public:
 
 	stack() {
-		this->tos = -1;
+		data = new T[max];
+		tos = -1;
+	}
+	~stack() {
+		cout << "delete data.." << endl;
+		delete[] data;
 	}
 
-	int empty() {
-		return this->tos == -1;
+	bool empty() {
+		if (tos == -1) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
-	int full() {
-		return this->tos == 99;
+	bool isFull() {
+		if (tos == max - 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	void push(T item) {
-		if (tos >= 99) {
-			cout << "Error : Stack is Overflow.." << endl;
+		if (isFull()) {
+			cout << "Stack is Full.." << endl;
 		}
 		else {
-			this->data[++tos] = item;
+			data[++tos] = item;
 		}
 	}
 
 	T pop() {
 		if (empty()) {
-			cout << "Error : Stack is Empty.." << endl;
+			cout << "stack is Empty.." << endl;
 		}
 		else {
-			return this->data[tos--];
+			return data[tos--];
 		}
 	}
 
 	T top() {
 		if (empty()) {
-			cout << "Error : Stack is Empty.." << endl;
+			cout << "stack is Empty.." << endl;
 		}
 		else {
-			return this->data[tos];
+			return data[tos];
 		}
 	}
 
+	T first() {
+		if (empty()) {
+			cout << "stack is Empty.." << endl;
+		}
+		else {
+			return data[0];
+		}
+	}
+	
 	int size() {
-		return (this->tos + 1);
+		return this->tos + 1;
 	}
 
 };
 
+
 int main(void) {
 
-	stack<string> mystack;
-	mystack.push("Woo");
-	mystack.push("Hyeon");
-	mystack.push("Jeon");
+	stack<string> s;
+	string insert;
+	
+	for (int i = 0; i < 3; i++) {
+		cout << "insert : ";
+		getline(cin, insert);
+		s.push(insert);
+	}
 
-	cout << "stack내 원소의 갯수 = " << mystack.size() << endl;
-
-	while (!mystack.empty()) {
-		cout << mystack.pop() << endl;
+	cout << "Data size = " << s.size() << endl;
+	
+	for (int i = 0; i < 3; i++) {
+		cout << s.pop() << endl;
 	}
 
 }
