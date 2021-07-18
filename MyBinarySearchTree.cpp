@@ -103,6 +103,39 @@ private:
 
 	}
 
+	int leaf_node(node<T>* l_node) {
+
+		int count = 0;
+
+		if (l_node != nullptr) {
+			if (l_node->left == nullptr && l_node->right == nullptr) {
+				return 1;
+			}
+			else {
+				count = leaf_node(l_node->left) + leaf_node(l_node->right);
+			}
+		}
+		return count;
+	}
+	
+	int max(int a, int b) {
+		if (a > b) {
+			return a;
+		}
+		else {
+			return b;
+		}
+	}
+
+	int get_height(node<T>* h_node) {
+		int height = 0;
+
+		if (h_node != nullptr) {
+			height = 1 + max(get_height(h_node->left), get_height(h_node->right));
+		}
+		return height;
+	}
+
 	void inorder(node<T>* node) {
 		if (node) {
 			inorder(node->left);
@@ -136,7 +169,7 @@ public:
 		cout << "remove Tree Class.." << endl;
 	}
 
-	void add(T item) {
+	void add(T item) { 
 		this->root = add(this->root, item);
 	}
 
@@ -144,7 +177,7 @@ public:
 		this->root = remove(this->root, item);
 	}
 
-	bool exist(T item) {
+	bool exist(T item) { 
 		if (search(this->root, item) == nullptr) {
 			return false;
 		}
@@ -153,6 +186,14 @@ public:
 
 	int size() {
 		return this->count;
+	}
+
+	int get_leaf_count() {
+		return leaf_node(this->root);
+	}
+
+	int get_height() {
+		return get_height(this->root);
 	}
 
 	void inorder() {
@@ -191,7 +232,8 @@ int main(void) {
 	tree->preorder();
 	cout << endl;
 	tree->postorder();
-	cout << tree->size() << endl;
-	
+	cout << "The number of node " << tree->size() << endl;
+	cout << "The number of leaf node " << tree->get_leaf_count() << endl;
+	cout << "height " << tree->get_height() << endl;
 	delete(tree);
 }
